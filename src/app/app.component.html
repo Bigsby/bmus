@@ -1,1 +1,7 @@
-Music will be here!
+<header >
+    <a routerLink="/home" routerLinkActive="activeLink" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a routerLink="/scales" routerLinkActive="activeLink" [routerLinkActiveOptions]="{exact: true}">Scales</a>
+</header>
+<div class="outlet-container">
+    <router-outlet></router-outlet>
+</div>
