@@ -1,0 +1,19 @@
+<h1>Detect Interval</h1>
+<select [(ngModel)]="root" (change)="updateDetect()">
+    <option *ngFor="let key of allKeys" [ngValue]="key" >{{getKeyDisplay(key)}}</option>
+</select>
+&nbsp;&gt;&nbsp;
+<select [(ngModel)]="target" (change)="updateDetect()">
+    <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
+</select>
+<span > = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
+
+<h1>Find Interval</h1>
+<select [(ngModel)]="findRoot" (change)="updateFind()">
+    <option *ngFor="let key of allKeys" [ngValue]="key" >{{getKeyDisplay(key)}}</option>
+</select>
+&nbsp;&gt;&nbsp;
+<select [(ngModel)]="findInterval" (change)="updateFind()">
+    <option *ngFor="let interval of intervals" [ngValue]="interval" >{{getIntervalDisplay(interval)}}</option>
+</select>
+<span> = </span><span [innerHTML]="findKeyDisplay"></span>
