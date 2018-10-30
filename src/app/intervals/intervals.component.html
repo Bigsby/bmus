@@ -7,7 +7,7 @@
     <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
 </select>
 <span > = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
-
+<div #rootDiv></div>
 <h1>Find Interval</h1>
 <select [(ngModel)]="findRoot" (change)="updateFind()">
     <option *ngFor="let key of allKeys" [ngValue]="key" >{{getKeyDisplay(key)}}</option>
