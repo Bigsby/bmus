@@ -2,26 +2,17 @@
 <div class="classifyContainer">
     <div class="selectContainer">
         <span>From</span>
-        <select [(ngModel)]="classifyRoot" (change)="updateClassify()">
-            <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
-        </select>
-        <div #classifyRootDiv></div>
+        <note-picker [(selectedKey)]="classifyRoot" (change)="updateClassify(true)"></note-picker>
     </div>
-    &nbsp;&gt;&nbsp;
     <div class="selectContainer">
         <span>To</span>
-        <select [(ngModel)]="classifyTarget" (change)="updateClassify()">
-            <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
-        </select>
-        <div #classifyTargetDiv></div>
+        <note-picker [(selectedKey)]="classifyTarget" (change)="updateClassify(true)"></note-picker>
     </div>
     <span> = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
 </div>
 <h1>Find Interval</h1>
 <div class="findContainer">
-    <select [(ngModel)]="findRoot" (change)="updateFind()">
-        <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
-    </select>
+        <note-picker [(selectedKey)]="findRoot" (change)="updateFind()"></note-picker>
     &nbsp;&gt;&nbsp;
     <select [(ngModel)]="findInterval" (change)="updateFind()">
         <option *ngFor="let interval of intervals" [ngValue]="interval">{{getIntervalDisplay(interval)}}</option>

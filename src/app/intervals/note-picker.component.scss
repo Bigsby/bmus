@@ -1,0 +1,9 @@
+@import "../../styles/colors.scss";
+
+$font_size: 30px;
+
+select {
+    font-size: $font_size;
+    background-color: $dark_background_color;
+    color: $foreground_color;
+}

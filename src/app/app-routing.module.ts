@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from "./home/home.component";
 import { ScalesComponent } from "./scales/scales.component";
 import { IntervalsComponent } from "./intervals/intervals.component";
+import { NotePickerComponent } from "./intervals/note-picker.component";
 
 const routes: Routes = [{
   path: "home",
@@ -29,6 +30,7 @@ export class AppRoutingModule { }
 
 export const RoutingComponents = [
   HomeComponent,
+  NotePickerComponent,
   IntervalsComponent,
   ScalesComponent
 ];

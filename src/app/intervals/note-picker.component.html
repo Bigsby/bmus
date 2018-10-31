@@ -1,0 +1,4 @@
+<select [(ngModel)]="selectedKey" (change)="updateKey()">
+    <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
+</select>
+<div #scoreDiv></div>

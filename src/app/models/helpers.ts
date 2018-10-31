@@ -1,4 +1,15 @@
-import { Key, Interval, IntervalQuality, Note, Accidental, } from "./models";
+import { Key, Interval, IntervalQuality, Note, Accidental, Pitch, } from "./models";
+
+type noteValueReference = { note: Note, value: number };
+const noteValueReferences: noteValueReference[] = [
+    { note: Note.A, value: 0 },
+    { note: Note.B, value: 1 },
+    { note: Note.C, value: 1.5 },
+    { note: Note.D, value: 2.5 },
+    { note: Note.E, value: 3.5 },
+    { note: Note.F, value: 4 },
+    { note: Note.G, value: 5 }
+];
 
 const notesSequence = [
     Note.A,
@@ -115,12 +126,17 @@ const qualityTonalDifferences = {
     DoubleAugmented: 2
 }
 
-function getIntervalQualityTonalDiferenece(quality: IntervalQuality){
+function getIntervalQualityTonalDiferenece(quality: IntervalQuality) {
     return qualityTonalDifferences[getIntervalQualityDisplay(quality)];
 }
 
-function getNoteIntervalQuality(root: Note, target:Note):number {
-    return noteIntervalQualities.find(niq => niq.root === root && niq.target === target).quality 
+function getNoteIntervalQuality(root: Note, target: Note): number {
+    return noteIntervalQualities.find(niq => niq.root === root && niq.target === target).quality
+}
+
+export function getPitchReferenceValue(pitch: Pitch): number {
+    const referenceValue = noteValueReferences.find(nr => nr.note === pitch.key.note);
+    return (referenceValue.value * pitch.octave) + pitch.key.accidental;
 }
 
 export function getIntervalDistance(interval: Interval): number {
@@ -198,7 +214,7 @@ export function getKeyDisplay(key: Key): string {
 }
 
 export function getVexKeyDisplay(key: Key): string {
-    return `${getNoteName(key.note).toLowerCase()}${getVexAccidentalDisplay(key.accidental)}`;
+    return `${getNoteName(key.note)}${getVexAccidentalDisplay(key.accidental)}`;
 }
 
 export function getIntervalQualityDisplay(quality: IntervalQuality) {
@@ -249,21 +265,21 @@ export function romanize(num: number): string {
     return roman;
 }
 
-export function getIntervals(): Interval[]{
+export function getIntervals(): Interval[] {
     let result: Interval[] = [];
 
     for (let degree = 1; degree < 8; degree++) {
         if (degree === 1) {
-            result.push({degree: degree, quality: IntervalQuality.Diminished });
-            result.push({degree: degree, quality: IntervalQuality.Unison });
-            result.push({degree: degree, quality: IntervalQuality.Augmented });
+            result.push({ degree: degree, quality: IntervalQuality.Diminished });
+            result.push({ degree: degree, quality: IntervalQuality.Unison });
+            result.push({ degree: degree, quality: IntervalQuality.Augmented });
         } else if (degree === 4 || degree === 5) {
-            result.push({degree: degree, quality: IntervalQuality.Diminished });
-            result.push({degree: degree, quality: IntervalQuality.Perfect });
-            result.push({degree: degree, quality: IntervalQuality.Augmented });
+            result.push({ degree: degree, quality: IntervalQuality.Diminished });
+            result.push({ degree: degree, quality: IntervalQuality.Perfect });
+            result.push({ degree: degree, quality: IntervalQuality.Augmented });
         } else {
-            result.push({degree: degree, quality: IntervalQuality.Minor });
-            result.push({degree: degree, quality: IntervalQuality.Major });
+            result.push({ degree: degree, quality: IntervalQuality.Minor });
+            result.push({ degree: degree, quality: IntervalQuality.Major });
         }
     }
 

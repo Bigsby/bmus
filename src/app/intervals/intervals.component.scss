@@ -11,16 +11,21 @@ $font_size: 30px;
 .classifyContainer {
     display: flex;
     align-items: center;
-    margin: 15px;
-    
+
     .selectContainer {
         display: flex;
         flex-direction: column;
+        margin: 15px;
     }
 }
 
-select {
-    font-size: $font_size;
-    background-color: $dark_background_color;
-    color: $foreground_color;
+.findContainer {
+    display: flex;
+    align-items: center;
+
+    select {
+        font-size: $font_size;
+        background-color: $dark_background_color;
+        color: $foreground_color;
+    }
 }

@@ -22,7 +22,7 @@ header {
         text-decoration: none;
         margin: 0 15px;
         &.activeLink {
-            background-color: red;
+            border-bottom: 2px solid $active_link;
         }
     }
 }
