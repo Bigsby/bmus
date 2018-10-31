@@ -1,19 +1,30 @@
-<h1>Detect Interval</h1>
-<select [(ngModel)]="root" (change)="updateDetect()">
-    <option *ngFor="let key of allKeys" [ngValue]="key" >{{getKeyDisplay(key)}}</option>
-</select>
-&nbsp;&gt;&nbsp;
-<select [(ngModel)]="target" (change)="updateDetect()">
-    <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
-</select>
-<span > = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
-<div #rootDiv></div>
+<h1>Classify Interval</h1>
+<div class="classifyContainer">
+    <div class="selectContainer">
+        <span>From</span>
+        <select [(ngModel)]="classifyRoot" (change)="updateClassify()">
+            <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
+        </select>
+        <div #classifyRootDiv></div>
+    </div>
+    &nbsp;&gt;&nbsp;
+    <div class="selectContainer">
+        <span>To</span>
+        <select [(ngModel)]="classifyTarget" (change)="updateClassify()">
+            <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
+        </select>
+        <div #classifyTargetDiv></div>
+    </div>
+    <span> = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
+</div>
 <h1>Find Interval</h1>
-<select [(ngModel)]="findRoot" (change)="updateFind()">
-    <option *ngFor="let key of allKeys" [ngValue]="key" >{{getKeyDisplay(key)}}</option>
-</select>
-&nbsp;&gt;&nbsp;
-<select [(ngModel)]="findInterval" (change)="updateFind()">
-    <option *ngFor="let interval of intervals" [ngValue]="interval" >{{getIntervalDisplay(interval)}}</option>
-</select>
-<span> = </span><span [innerHTML]="findKeyDisplay"></span>
+<div class="findContainer">
+    <select [(ngModel)]="findRoot" (change)="updateFind()">
+        <option *ngFor="let key of allKeys" [ngValue]="key">{{getKeyDisplay(key)}}</option>
+    </select>
+    &nbsp;&gt;&nbsp;
+    <select [(ngModel)]="findInterval" (change)="updateFind()">
+        <option *ngFor="let interval of intervals" [ngValue]="interval">{{getIntervalDisplay(interval)}}</option>
+    </select>
+    <span> = </span><span [innerHTML]="findKeyDisplay"></span>
+</div>

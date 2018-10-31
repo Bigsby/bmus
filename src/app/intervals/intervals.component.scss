@@ -3,6 +3,20 @@
 $font_size: 30px;
 :host {
     font-size: $font_size;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.classifyContainer {
+    display: flex;
+    align-items: center;
+    margin: 15px;
+    
+    .selectContainer {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 select {

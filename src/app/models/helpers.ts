@@ -82,8 +82,16 @@ const accidentalDisplays: AccidentalDisplay[] = [
     { accidental: Accidental.Natural, display: "" },
     { accidental: Accidental.Flat, display: '\u266D' },
     { accidental: Accidental.Sharp, display: "\u266F" },
-    { accidental: Accidental.DoubleFlat, display: "	&#x1d12b;" },
+    { accidental: Accidental.DoubleFlat, display: "&#x1d12b;" },
     { accidental: Accidental.DoubleSharp, display: "&#x1d12a;" },
+];
+
+const vexAccidentalDisplays: AccidentalDisplay[] = [
+    { accidental: Accidental.Natural, display: "" },
+    { accidental: Accidental.Flat, display: 'b' },
+    { accidental: Accidental.Sharp, display: "#" },
+    { accidental: Accidental.DoubleFlat, display: "bb" },
+    { accidental: Accidental.DoubleSharp, display: "##" },
 ];
 
 const tonalDistanteRefereces = {
@@ -181,8 +189,16 @@ export function getAccidentalDisplay(accidental: Accidental): string {
     return accidentalDisplays.find(ad => ad.accidental === accidental).display;
 }
 
+export function getVexAccidentalDisplay(accidental: Accidental): string {
+    return vexAccidentalDisplays.find(ad => ad.accidental === accidental).display;
+}
+
 export function getKeyDisplay(key: Key): string {
     return `${getNoteName(key.note)}${getAccidentalDisplay(key.accidental)}`;
+}
+
+export function getVexKeyDisplay(key: Key): string {
+    return `${getNoteName(key.note).toLowerCase()}${getVexAccidentalDisplay(key.accidental)}`;
 }
 
 export function getIntervalQualityDisplay(quality: IntervalQuality) {
