@@ -2,20 +2,20 @@
 <div class="classifyContainer">
     <div class="selectContainer">
         <span>From</span>
-        <note-picker [(selectedKey)]="classifyRoot" (change)="updateClassify(true)"></note-picker>
+        <note-picker [(selectedPitch)]="classifyRoot" (change)="updateClassify(true)"></note-picker>
     </div>
     <div class="selectContainer">
         <span>To</span>
-        <note-picker [(selectedKey)]="classifyTarget" (change)="updateClassify(true)"></note-picker>
+        <note-picker [(selectedPitch)]="classifyTarget" (change)="updateClassify(true)"></note-picker>
     </div>
     <span> = {{tonalDistance}} tone(s) = {{intervalDisplay}}</span>
 </div>
 <h1>Find Interval</h1>
 <div class="findContainer">
-        <note-picker [(selectedKey)]="findRoot" (change)="updateFind()"></note-picker>
+        <note-picker [(selectedPitch)]="findRoot" (change)="updateFind()"></note-picker>
     &nbsp;&gt;&nbsp;
     <select [(ngModel)]="findInterval" (change)="updateFind()">
         <option *ngFor="let interval of intervals" [ngValue]="interval">{{getIntervalDisplay(interval)}}</option>
     </select>
-    <span> = </span><span [innerHTML]="findKeyDisplay"></span>
+    <span> = </span><span [innerHTML]="findPitchDisplay"></span>
 </div>

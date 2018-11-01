@@ -2,8 +2,25 @@
 
 $font_size: 30px;
 
+:host {
+    position: relative;
+}
+
 select {
     font-size: $font_size;
     background-color: $dark_background_color;
     color: $foreground_color;
+}
+
+.noteHand {
+    cursor: pointer;
+}
+
+.pitchDisplay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: .5;
+    pointer-events:none;
+    font-size: 15px;
 }

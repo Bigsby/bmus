@@ -1,14 +1,14 @@
-import { Key, Interval, IntervalQuality, Note, Accidental, Pitch, } from "./models";
+import { Key, Interval, IntervalQuality, Note, Accidental, Pitch } from "./models";
 
 type noteValueReference = { note: Note, value: number };
 const noteValueReferences: noteValueReference[] = [
-    { note: Note.A, value: 0 },
-    { note: Note.B, value: 1 },
-    { note: Note.C, value: 1.5 },
-    { note: Note.D, value: 2.5 },
-    { note: Note.E, value: 3.5 },
-    { note: Note.F, value: 4 },
-    { note: Note.G, value: 5 }
+    { note: Note.C, value: 0},
+    { note: Note.D, value: 1 },
+    { note: Note.E, value: 2 },
+    { note: Note.F, value: 2.5 },
+    { note: Note.G, value: 3.5 },
+    { note: Note.A, value: 4.5 },
+    { note: Note.B, value: 5.5 }
 ];
 
 const notesSequence = [
@@ -136,12 +136,17 @@ function getNoteIntervalQuality(root: Note, target: Note): number {
 
 export function getPitchReferenceValue(pitch: Pitch): number {
     const referenceValue = noteValueReferences.find(nr => nr.note === pitch.key.note);
-    return (referenceValue.value * pitch.octave) + pitch.key.accidental;
+    return (pitch.octave * 12) + referenceValue.value + pitch.key.accidental;
+    //return (referenceValue.value * pitch.octave) + pitch.key.accidental;
 }
 
 export function getIntervalDistance(interval: Interval): number {
     const tonalDistanceReference = tonalDistanteRefereces[interval.degree];
     return tonalDistanceReference + (getIntervalQualityTonalDiferenece(interval.quality) / 2);
+}
+
+export function getPitchInterval(root: Pitch, target: Pitch ): Interval {
+    return getKeyInterval(root.key, target.key);
 }
 
 export function getKeyInterval(root: Key, target: Key): Interval {
@@ -211,6 +216,10 @@ export function getVexAccidentalDisplay(accidental: Accidental): string {
 
 export function getKeyDisplay(key: Key): string {
     return `${getNoteName(key.note)}${getAccidentalDisplay(key.accidental)}`;
+}
+
+export function getPitchDisplay(pitch: Pitch): string {
+    return `${getKeyDisplay(pitch.key)}/${pitch.octave}`;
 }
 
 export function getVexKeyDisplay(key: Key): string {
@@ -284,6 +293,10 @@ export function getIntervals(): Interval[] {
     }
 
     return result;
+}
+
+export function getIntervalPitch(root: Pitch, interval: Interval): Pitch {
+    return { key: getIntervalKey(root.key, interval), octave: 4};
 }
 
 export function getIntervalKey(root: Key, interval: Interval): Key {
