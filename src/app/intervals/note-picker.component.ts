@@ -3,6 +3,7 @@ import * as Vex from "vexflow";
 
 import * as models from "./../models/models";
 import * as helpers from "./../models/helpers";
+import { KeyEventsPlugin } from "@angular/platform-browser/src/dom/events/key_events";
 
 @Component({
     selector: "note-picker",
@@ -17,13 +18,14 @@ export class NotePickerComponent implements AfterViewInit {
     private renderer: Vex.Flow.Renderer;
     private context: Vex.IRenderContext;
     private stave: Vex.Flow.Stave;
+    private htmlElement: HTMLElement;
     private staveInBetweenSpace: number;
     private formatter: Vex.Flow.Formatter;
-    private maxPitch: models.Pitch = { key: { note: models.Note.C, accidental: models.Accidental.Natural}, octave: 6};
-    private minPitch: models.Pitch = { key: { note: models.Note.G, accidental: models.Accidental.Natural}, octave: 3};
+    private maxPitch: models.Pitch = { key: { note: models.Note.C, accidental: models.Accidental.Natural }, octave: 6 };
+    private minPitch: models.Pitch = { key: { note: models.Note.G, accidental: models.Accidental.Natural }, octave: 3 };
     private maxPitchValue: number = helpers.getPitchReferenceValue(this.maxPitch);
     private minPitchValue: number = helpers.getPitchReferenceValue(this.minPitch);
-    currentNote: models.Pitch;
+    provisoryPitch: models.Pitch;
 
     @ViewChild("scoreDiv") scoreDiv: ElementRef;
     constructor() {
@@ -44,7 +46,9 @@ export class NotePickerComponent implements AfterViewInit {
         this.stave.setContext(this.context).draw();
         this.staveInBetweenSpace = (<any>this.stave).options.spacing_between_lines_px;
         const _this = this;
-        (<HTMLElement>this.scoreDiv.nativeElement).addEventListener("mousemove", (e) => this.getCurrentNote.call(_this, e));
+        this.htmlElement = this.scoreDiv.nativeElement as HTMLElement;
+        this.htmlElement.addEventListener("mousemove", (e) => this.getCurrentNote.call(_this, e));
+        this.htmlElement.onclick = (event) => this.setSelectedPitch(event);
     }
 
     private redrawStave() {
@@ -64,7 +68,7 @@ export class NotePickerComponent implements AfterViewInit {
     private getBaseNote() {
         return { note: 'G', octave: 6 }; // represents 4 lines above the treble clef
     }
-    
+
     private toNoteName(noteArea: number): models.Pitch {
         var baseNote = this.getBaseNote();
         var baseNoteValue = this.noteMap.indexOf(baseNote.note);
@@ -103,23 +107,42 @@ export class NotePickerComponent implements AfterViewInit {
     private drawProvisoryNote() {
         this.redrawStave();
         const voice = new Vex.Flow.Voice({ num_beats: 1, beat_value: 1 });
-        const wholeKeyDisplay = `${helpers.getNoteName(this.currentNote.key.note)}/${this.currentNote.octave}`;
-        const note = new Vex.Flow.StaveNote({ keys: [wholeKeyDisplay], duration: "w" });
-        if (this.selectedPitch.key.accidental !== models.Accidental.Natural) {
-            note.addAccidental(0, new Vex.Flow.Accidental(helpers.getVexAccidentalDisplay(this.selectedPitch.key.accidental)));
+        const keys: string[] = [];
+        let provisoryIndex = 0;
+        if (!this.selectedPitch || this.provisoryPitch.key.note !== this.selectedPitch.key.note) {
+            keys.push(`${helpers.getNoteName(this.provisoryPitch.key.note)}/${this.provisoryPitch.octave}`);
         }
-        voice.addTickables([
-            note
-        ]);
 
+        if (this.selectedPitch) {
+            keys.push(`${helpers.getNoteName(this.selectedPitch.key.note)}/${this.selectedPitch.octave}`);
+        }
+        const notes = new Vex.Flow.StaveNote({ keys: keys, duration: "w" });
+        if (keys.length > 1)
+            provisoryIndex = helpers.getPitchReferenceValue(this.selectedPitch) < helpers.getPitchReferenceValue(this.provisoryPitch) ? 1 : 0;
+        if (this.provisoryPitch.key.note !== this.selectedPitch.key.note)
+            notes.setKeyStyle(Math.min(provisoryIndex, keys.length), { fillStyle: "grey" });
+        if (this.provisoryPitch.key.accidental !== models.Accidental.Natural) {
+            notes.addAccidental(0, new Vex.Flow.Accidental(helpers.getVexAccidentalDisplay(this.provisoryPitch.key.accidental)));
+        }
+        if (this.selectedPitch && this.selectedPitch.key.accidental !== models.Accidental.Natural) {
+            notes.addAccidental(1, new Vex.Flow.Accidental(helpers.getVexAccidentalDisplay(this.selectedPitch.key.accidental)));
+        }
+        voice.addTickables([notes]);
         this.formatter.joinVoices([voice]).format([voice], 400);
         voice.draw(this.context, this.stave);
     }
 
     private getCurrentNote(e) {
         const note = this.getNoteName(this.stave, e.offsetY);
-        this.currentNote = note;
-        this.selectedPitch = this.currentNote;
+        this.provisoryPitch = note;
+        //this.selectedPitch = this.provisoryPitch;
+        this.drawProvisoryNote();
+        // this.change.emit();
+        // this.selectedPitchChange.emit(this.selectedPitch);
+    }
+
+    private setSelectedPitch(e) {
+        this.selectedPitch = this.provisoryPitch;
         this.drawProvisoryNote();
         this.change.emit();
         this.selectedPitchChange.emit(this.selectedPitch);
